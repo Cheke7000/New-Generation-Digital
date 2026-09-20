@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>New Generation Digital · iPhone en El Salvador</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;800&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header><div class="wrap">
+  <a class="logo" href="#">New Generation Digital</a>
+  <div class="row"><button class="btn ghost" id="theme" aria-label="Cambiar entre modo día y modo noche">🌙</button><button class="btn ghost" id="openCart">Carrito <span id="count">0</span></button></div>
+</div></header>
+
+<main class="wrap">
+  <div class="hero">
+    <div>
+      <h1>Tu iPhone nuevo, entregado en todo El Salvador.</h1>
+      <p>Elige modelo, color y capacidad. Entregamos los sábados y domingos, en San Salvador o en tu departamento.</p>
+      <div class="row"><a class="btn" href="#catalogo">Ver modelos</a><a class="btn ghost" data-wa="Hola, quiero información sobre un iPhone" href="#">WhatsApp</a></div>
+    </div>
+    <div class="stage">
+      <div class="phone big" id="heroPhone" role="img" aria-label="iPhone de muestra"><i></i></div>
+      <div class="swatches" id="heroSw" role="group" aria-label="Elige un color"></div>
+      <output id="heroColor"></output>
+    </div>
+  </div>
+
+  <section id="catalogo">
+    <h2>Modelos</h2>
+    <div class="grid">
+      <!-- PRODUCTOS: copia una línea, cambia data-name y data-price (precio de la capacidad más baja) -->
+      <article class="card" data-name="iPhone 14" data-price="399"></article>
+      <article class="card" data-name="iPhone 14 Pro" data-price="549"></article>
+      <article class="card" data-name="iPhone 14 Pro Max" data-price="649"></article>
+      <article class="card" data-name="iPhone 15" data-price="549"></article>
+      <article class="card" data-name="iPhone 15 Pro" data-price="749"></article>
+      <article class="card" data-name="iPhone 15 Pro Max" data-price="849"></article>
+      <article class="card" data-name="iPhone 16" data-price="699"></article>
+      <article class="card" data-name="iPhone 16 Pro" data-price="899"></article>
+      <article class="card" data-name="iPhone 16 Pro Max" data-price="999"></article>
+      <article class="card" data-name="iPhone 17" data-price="829"></article>
+      <article class="card" data-name="iPhone 17 Pro" data-price="1099" data-gb="256,512,1024"></article>
+      <article class="card" data-name="iPhone 17 Pro Max" data-price="1199" data-gb="256,512,1024"></article>
+    </div>
+  </section>
+
+  <section id="entrega">
+    <h2>Cómo entregamos</h2>
+    <div class="info">
+      <div><h3>San Salvador</h3><p>Sábados y domingos, en un punto público como Metrocentro o a la puerta de tu casa, a la hora que elijas.</p></div>
+      <div><h3>Otros departamentos</h3><p>Sábados y domingos con mensajería externa, en sus puntos de entrega y según su horario.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap"><span>© 2026 New Generation Digital</span><span>No afiliados a Apple Inc.</span></div></footer>
+
+<!-- Ventana emergente del producto -->
+<dialog id="pd" aria-labelledby="pdName">
+ <div class="sheet">
+  <button class="x" id="pdClose" aria-label="Cerrar">✕</button>
+  <div class="pdtop"><div class="phone md" id="pdPhone"><i></i></div><div><h3 id="pdName"></h3><div class="price" id="pdPrice"></div></div></div>
+  <div id="s1">
+   <h4>Color</h4><div class="swatches" id="pdColors" role="group" aria-label="Color"></div><output id="pdColorName"></output>
+   <h4>Almacenamiento</h4><div class="chips" id="pdGb" role="group" aria-label="Almacenamiento"></div>
+   <button class="btn full" id="toS2">Siguiente</button>
+  </div>
+  <div id="s2" hidden>
+   <h4>Lugar de entrega</h4>
+   <label>Departamento<select id="dept"></select></label>
+   <div id="ssBox">
+    <div class="chips seg" role="group" aria-label="Tipo de entrega"><button class="chip" id="mPoint" aria-pressed="true">Punto público</button><button class="chip" id="mHome" aria-pressed="false">A mi casa</button></div>
+    <div id="pointBox"><label>Punto de entrega<select id="point"></select></label></div>
+    <div id="homeBox" hidden>
+     <label>Dirección<textarea id="addr" rows="2" placeholder="Colonia, calle, casa, referencias"></textarea></label>
+     <div id="mapBox"><div id="map"></div><button class="btn ghost full" id="geo">Usar mi ubicación actual</button><output id="mapOut">O toca el mapa para marcar tu ubicación</output></div>
+    </div>
+   </div>
+   <div id="otherBox" hidden><label>Punto de entrega de la mensajería<select id="cpoint"></select></label></div>
+   <p class="err" id="err" role="alert"></p>
+   <div class="row"><button class="btn ghost" id="back2">Atrás</button><button class="btn" id="toS3">Siguiente</button></div>
+  </div>
+  <div id="s3" hidden>
+   <h4>Fecha de entrega</h4>
+   <p class="note" id="dayNote"></p>
+   <div class="cal"><div class="calhead"><button class="chip" id="prevM" aria-label="Mes anterior">‹</button><strong id="monthName"></strong><button class="chip" id="nextM" aria-label="Mes siguiente">›</button></div><div class="calgrid" id="calGrid"></div></div>
+   <div id="hourBox"><label>Hora<select id="hour"></select></label></div>
+   <p class="note" id="courierNote" hidden></p>
+   <p class="err" id="err3" role="alert"></p>
+   <div class="row"><button class="btn ghost" id="back3">Atrás</button><button class="btn" id="add">Agregar al carrito</button></div>
+  </div>
+ </div>
+</dialog>
+
+<!-- Carrito -->
+<dialog id="cart" aria-labelledby="cartTitle">
+ <div class="sheet">
+  <button class="x" id="cartClose" aria-label="Cerrar">✕</button>
+  <h3 id="cartTitle">Tu carrito</h3>
+  <ul class="list" id="cartList"></ul>
+  <p class="note" id="empty">Aún no has agregado nada.</p>
+  <div class="total"><span>Total</span><span id="total">$0</span></div>
+  <label>Nombre<input id="cName" autocomplete="name"></label>
+  <label>Teléfono<input id="cPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="7000 0000"></label>
+  <p class="err" id="cErr" role="alert"></p>
+  <button class="btn full" id="checkout">Finalizar pedido</button>
+ </div>
+</dialog>
+<dialog id="done" aria-labelledby="doneT">
+ <div class="sheet"><h3 id="doneT">¡Pedido enviado!</h3>
+ <p class="note">Alguien de nuestro equipo se contactará contigo para confirmar el pedido.</p>
+ <button class="btn full" id="doneOk">Listo</button></div>
+</dialog>
+<template id="itemTpl">
+ <li class="item"><div><strong class="in"></strong><small class="ic"></small><small class="id"></small></div>
+ <div class="ir"><span class="ip"></span><button class="rm">Quitar</button></div></li>
+</template>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
